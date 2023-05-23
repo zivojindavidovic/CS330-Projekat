@@ -14,3 +14,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+
+@Composable
+fun RequestInternetPermissionsDialog(
+    launcher: ManagedActivityResultLauncher<String, Boolean>,
+    modifier: Modifier = Modifier
+){
+    AlertDialog(
+        modifier = modifier,
+        onDismissRequest = { /*TODO*/ },
+        title = { Text(text = "Internet Permissions Required")},
+        text = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ){
+
+            }
+        },
+        confirmButton = {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.CenterEnd
+            ){
+                Button(
+                    onClick = {
+                        launcher.launch(Manifest.permission.INTERNET)
+                    }
+                ) {
+                    Text(text = "Allow")
+                }
+            }
+        }
+    )
+}
