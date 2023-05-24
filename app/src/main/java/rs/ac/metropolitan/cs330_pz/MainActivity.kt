@@ -1,27 +1,65 @@
 package rs.ac.metropolitan.cs330_pz
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import rs.ac.metropolitan.cs330_pz.screens.navigation.BottomNavigation
 import rs.ac.metropolitan.cs330_pz.ui.theme.CS330PZTheme
 
 class MainActivity : ComponentActivity() {
     lateinit var navController: NavHostController
+    @OptIn(ExperimentalMaterial3Api::class)
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             CS330PZTheme {
                 navController = rememberNavController()
                 NavSettup(navController)
+                Scaffold(
+                    bottomBar = {
+                        BottomNavigation(
+                            items = listOf(
+                                BottomNavItem(
+                                    name = "Home",
+                                    route = "home",
+                                    icon = Icons.Default.Home
+                                ),
+                                BottomNavItem(
+                                    name = "Map",
+                                    route = "map",
+                                    icon = Icons.Default.LocationOn
+                                ),
+                                BottomNavItem(
+                                    name = "AI",
+                                    route = "ai",
+                                    icon = Icons.Default.Search
+                                ),
+                                BottomNavItem(
+                                    name = "Add",
+                                    route = "add",
+                                    icon = Icons.Default.Add
+                                )
+                            ),
+                            navController = navController,
+                            onItemClick = {
+                                navController.navigate(it.route)
+                            }
+                        )
+                    }
+                ) {  paddingValue->
+                    NavSettup(navController = navController)
+                }
             }
         }
     }
