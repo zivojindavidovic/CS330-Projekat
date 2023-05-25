@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             CS330PZTheme {
                 navController = rememberNavController()
-                NavSettup(navController)
                 Scaffold(
                     bottomBar = {
                         BottomNavigation(
@@ -42,7 +41,7 @@ class MainActivity : ComponentActivity() {
                                 ),
                                 BottomNavItem(
                                     name = "AI",
-                                    route = "ai",
+                                    route = "openai",
                                     icon = Icons.Default.Search
                                 ),
                                 BottomNavItem(
@@ -58,7 +57,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) {  paddingValue->
-                    NavSettup(navController = navController)
+                    NavSettup(navController = navController, context = this)
                 }
             }
         }
