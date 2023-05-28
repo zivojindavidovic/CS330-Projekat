@@ -1,5 +1,6 @@
 package rs.ac.metropolitan.cs330_pz
 
+import android.icu.util.Calendar
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -60,4 +61,12 @@ class AppViewModel(): ViewModel() {
             }
         }
     }
+
+    //addTravelScreen
+    val calendar = Calendar.getInstance()
+
+    var travelYear = calendar.get(Calendar.YEAR)
+    var travelMonth = calendar.get(Calendar.MONTH)
+    var travelDay = calendar.get(Calendar.DAY_OF_MONTH)
+
 }

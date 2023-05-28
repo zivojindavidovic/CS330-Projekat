@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import rs.ac.metropolitan.cs330_pz.screens.AddTravelScreen
 import rs.ac.metropolitan.cs330_pz.screens.HomeScreen
 import rs.ac.metropolitan.cs330_pz.screens.MapScreen
 import rs.ac.metropolitan.cs330_pz.screens.OpenAIScreen
@@ -20,7 +21,7 @@ fun NavSettup(navController: NavHostController, context: Context){
             HomeScreen(vm)
         }
         composable(route = TravelRoute.AddTravel.route){
-            TravelScreen()
+            AddTravelScreen(vm)
         }
         composable(route = TravelRoute.Map.route){
             MapScreen()
