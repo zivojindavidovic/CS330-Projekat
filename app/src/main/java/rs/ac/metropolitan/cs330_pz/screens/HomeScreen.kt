@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.DateRange
@@ -25,11 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import rs.ac.metropolitan.cs330_pz.AppViewModel
+import rs.ac.metropolitan.cs330_pz.TravelState
 import rs.ac.metropolitan.cs330_pz.screens.dialogs.RequestInternetPermissionsDialog
 
 
 @Composable
-fun HomeScreen(vm: AppViewModel){
+fun HomeScreen(vm: AppViewModel, state: TravelState){
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ){isGranted->
@@ -46,67 +49,57 @@ fun HomeScreen(vm: AppViewModel){
         }
     }else{
         Column {
-            DestinationsList(vm)
+            DestinationsList(state)
         }
     }
 }
 
 @Composable
-fun DestinationsList(vm: AppViewModel){
-    Text(text = "Lista Destinacija")
-    for(i in 1..3){
-        SingleDestination()
+fun DestinationsList(state: TravelState){
+    LazyColumn(){
+        items(state.travels){travel ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(8.dp)
+                ) {
+                    Column {
+                        Icon(
+                            imageVector = Icons.Default.DateRange,
+                            contentDescription = "Calendar",
+                            modifier = Modifier
+                                .padding(12.dp)
+                        )
+                    }
+                    Column {
+                        Row {
+                            Text(text = "${travel.travelFrom} - ${travel.travelTo}")
+                        }
+                        Row {
+                            Text(text = "${travel.travelDate}")
+                        }
+                    }
+                    Spacer(
+                        modifier = Modifier.
+                        weight(1f)
+                    )
+                    Column {
+                        Icon(
+                            Icons.Default.ArrowForward,
+                            contentDescription = "View Destination",
+                            modifier = Modifier
+                                .clickable {
+
+                                }
+                        )
+                    }
+                }
+            }
+        }
     }
-}
-
-@Composable
-fun SingleDestination(){
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
-       Row(
-           verticalAlignment = Alignment.CenterVertically,
-           modifier = Modifier
-               .padding(8.dp)
-       ) {
-           Column {
-               Icon(
-                   imageVector = Icons.Default.DateRange,
-                   contentDescription = "Calendar",
-                   modifier = Modifier
-                       .padding(12.dp)
-               )
-           }
-           Column {
-               Row {
-                   Text(text = "Novi Sad - Beograd")
-               }
-               Row {
-                    Text(text = "27. May 2023")
-               }
-           }
-           Spacer(
-               modifier = Modifier.
-               weight(1f)
-           )
-           Column {
-               Icon(
-                   Icons.Default.ArrowForward,
-                   contentDescription = "View Destination",
-                   modifier = Modifier
-                       .clickable {
-
-                       }
-               )
-           }
-       }
-    }
-}
-
-@Preview
-@Composable
-fun SingleDestinationPreview(){
-    SingleDestination()
 }
