@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -71,22 +72,35 @@ fun SingleDestination(){
                .padding(8.dp)
        ) {
            Column {
-               Text(text = "Beograd - Novi Sad")
+               Icon(
+                   imageVector = Icons.Default.DateRange,
+                   contentDescription = "Calendar",
+                   modifier = Modifier
+                       .padding(12.dp)
+               )
            }
            Column {
-               Text(text = "10 Km")
+               Row {
+                   Text(text = "Novi Sad - Beograd")
+               }
+               Row {
+                    Text(text = "27. May 2023")
+               }
            }
            Spacer(
                modifier = Modifier.
                weight(1f)
            )
-           Icon(
-               Icons.Default.ArrowForward,
-               contentDescription = "View Destination",
-               modifier = Modifier.clickable {
+           Column {
+               Icon(
+                   Icons.Default.ArrowForward,
+                   contentDescription = "View Destination",
+                   modifier = Modifier
+                       .clickable {
 
-               }
-           )
+                       }
+               )
+           }
        }
     }
 }

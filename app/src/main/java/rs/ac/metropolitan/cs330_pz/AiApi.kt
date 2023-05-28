@@ -8,7 +8,7 @@ import retrofit2.http.POST
 interface AiApi {
     @Headers(
         "Content-Type: application/json",
-        "Authorization: Bearer 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"
+        "Authorization: Bearer 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"
     )
     @POST("/v1/completions")
     fun getCompletion(
