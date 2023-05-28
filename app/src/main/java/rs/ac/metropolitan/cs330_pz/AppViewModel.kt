@@ -8,11 +8,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class AppViewModel(): ViewModel() {
+class AppViewModel(
+    private val dao: TravelDao
+): ViewModel() {
 
     lateinit var navController: NavHostController
     var grantedInternetPermission = mutableStateOf(false)
@@ -69,4 +76,81 @@ class AppViewModel(): ViewModel() {
     var travelMonth = calendar.get(Calendar.MONTH)
     var travelDay = calendar.get(Calendar.DAY_OF_MONTH)
 
+    //adding Travel to Database
+
+    private val _state = MutableStateFlow(TravelState())
+    private val _travels = dao.getAllTravels()
+    val state = combine(_state, _travels){state, travels->
+            state.copy(
+                travels = travels
+            )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TravelState())
+
+    fun onEvent(event: TravelEvent){
+        when(event){
+            is TravelEvent.DeleteTravel -> {
+                viewModelScope.launch {
+                    dao.deleteTravel(event.travel)
+                }
+            }
+            TravelEvent.SaveTravel -> {
+                val travelFrom = _state.value.travelFrom
+                val travelTo = _state.value.travelTo
+                val travelStops = _state.value.stops
+                val travelDate = _state.value.date
+                val travelDistance = _state.value.distance
+                if(
+                    travelFrom.isBlank()
+                    || travelTo.isBlank()
+                    || travelStops.isBlank()
+                    //|| travelDate.isBlank()
+                    //|| travelDistance.isBlank()
+                ){
+                    return
+                }
+                val travel = Travel(
+                    travelFrom = travelFrom,
+                    travelTo = travelTo,
+                    travelStops = travelStops,
+                    travelDate = travelDate,
+                    travelDistance = travelDistance
+                )
+                viewModelScope.launch {
+                    dao.upsertTravel(travel)
+                    _state.update { it.copy(
+                        travelFrom = "",
+                        travelTo = "",
+                        stops = "",
+                        date = "",
+                        distance = ""
+                    ) }
+                }
+            }
+            is TravelEvent.SetDistance -> {
+                _state.update { it.copy(
+                    distance = event.distance
+                ) }
+            }
+            is TravelEvent.SetStops -> {
+                _state.update { it.copy(
+                    stops = event.stops
+                ) }
+            }
+            is TravelEvent.SetTravelDate -> {
+                _state.update { it.copy(
+                    date = event.date
+                ) }
+            }
+            is TravelEvent.SetTravelFrom -> {
+                _state.update { it.copy(
+                    travelFrom = event.travelFrom
+                ) }
+            }
+            is TravelEvent.SetTravelTo -> {
+                _state.update { it.copy(
+                    travelTo = event.travelTo
+                ) }
+            }
+        }
+    }
 }

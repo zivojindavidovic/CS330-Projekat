@@ -10,10 +10,9 @@ import rs.ac.metropolitan.cs330_pz.screens.AddTravelScreen
 import rs.ac.metropolitan.cs330_pz.screens.HomeScreen
 import rs.ac.metropolitan.cs330_pz.screens.MapScreen
 import rs.ac.metropolitan.cs330_pz.screens.OpenAIScreen
-import rs.ac.metropolitan.cs330_pz.screens.TravelScreen
 
 @Composable
-fun NavSettup(navController: NavHostController, context: Context){
+fun NavSettup(navController: NavHostController, context: Context, state: TravelState, onEvent: (TravelEvent) -> Unit){
     val vm: AppViewModel = viewModel()
     vm.navController = navController
     NavHost(navController = navController, startDestination = TravelRoute.Home.route ){
@@ -21,7 +20,7 @@ fun NavSettup(navController: NavHostController, context: Context){
             HomeScreen(vm)
         }
         composable(route = TravelRoute.AddTravel.route){
-            AddTravelScreen(vm)
+            AddTravelScreen(vm, state, onEvent)
         }
         composable(route = TravelRoute.Map.route){
             MapScreen()
