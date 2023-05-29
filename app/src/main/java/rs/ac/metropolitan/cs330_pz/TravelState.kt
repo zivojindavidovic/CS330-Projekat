@@ -1,6 +1,6 @@
 package rs.ac.metropolitan.cs330_pz
 
-import androidx.compose.runtime.mutableStateOf
+import rs.ac.metropolitan.cs330_pz.model.Travel
 
 data class TravelState(
     val travels: List<Travel> = emptyList(),

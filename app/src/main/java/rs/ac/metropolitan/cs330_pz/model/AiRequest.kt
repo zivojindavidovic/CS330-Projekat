@@ -1,4 +1,4 @@
-package rs.ac.metropolitan.cs330_pz
+package rs.ac.metropolitan.cs330_pz.model
 
 data class AiRequest(
     val prompt: String,

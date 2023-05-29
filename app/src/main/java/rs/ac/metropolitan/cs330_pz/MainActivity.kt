@@ -19,6 +19,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import rs.ac.metropolitan.cs330_pz.database.TravelDatabase
+import rs.ac.metropolitan.cs330_pz.model.BottomNavItem
+import rs.ac.metropolitan.cs330_pz.navigation.NavSettup
 import rs.ac.metropolitan.cs330_pz.screens.navigation.BottomNavigation
 import rs.ac.metropolitan.cs330_pz.ui.theme.CS330PZTheme
 

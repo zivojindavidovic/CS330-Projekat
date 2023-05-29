@@ -14,8 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import rs.ac.metropolitan.cs330_pz.AppViewModel
-import rs.ac.metropolitan.cs330_pz.BottomNavItem
+import rs.ac.metropolitan.cs330_pz.model.BottomNavItem
 
 @Composable
 fun BottomNavigation(

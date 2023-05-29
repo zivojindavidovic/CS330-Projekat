@@ -1,6 +1,5 @@
 package rs.ac.metropolitan.cs330_pz.screens
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -20,13 +19,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import rs.ac.metropolitan.cs330_pz.AppViewModel
+import rs.ac.metropolitan.cs330_pz.model.Travel
 import rs.ac.metropolitan.cs330_pz.TravelState
 import rs.ac.metropolitan.cs330_pz.screens.dialogs.RequestInternetPermissionsDialog
 
@@ -49,56 +46,63 @@ fun HomeScreen(vm: AppViewModel, state: TravelState){
         }
     }else{
         Column {
-            DestinationsList(state)
+            DestinationsList(state, vm)
         }
     }
 }
 
 @Composable
-fun DestinationsList(state: TravelState){
+fun DestinationsList(state: TravelState, vm: AppViewModel){
     LazyColumn(){
         items(state.travels){travel ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .padding(8.dp)
-                ) {
-                    Column {
-                        Icon(
-                            imageVector = Icons.Default.DateRange,
-                            contentDescription = "Calendar",
-                            modifier = Modifier
-                                .padding(12.dp)
-                        )
-                    }
-                    Column {
-                        Row {
-                            Text(text = "${travel.travelFrom} - ${travel.travelTo}")
-                        }
-                        Row {
-                            Text(text = "${travel.travelDate}")
-                        }
-                    }
-                    Spacer(
-                        modifier = Modifier.
-                        weight(1f)
-                    )
-                    Column {
-                        Icon(
-                            Icons.Default.ArrowForward,
-                            contentDescription = "View Destination",
-                            modifier = Modifier
-                                .clickable {
+            SingleTravel(travel = travel){
+                vm.navigateToTravelDetails(it)
+            }
+        }
+    }
+}
 
-                                }
-                        )
-                    }
+@Composable
+fun SingleTravel(travel: Travel, onTravelSelected: (Int) -> Unit){
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(8.dp)
+        ) {
+            Column {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = "Calendar",
+                    modifier = Modifier
+                        .padding(12.dp)
+                )
+            }
+            Column {
+                Row {
+                    Text(text = "${travel.travelFrom} - ${travel.travelTo}")
                 }
+                Row {
+                    Text(text = "${travel.travelDate}")
+                }
+            }
+            Spacer(
+                modifier = Modifier.
+                weight(1f)
+            )
+            Column {
+                Icon(
+                    Icons.Default.ArrowForward,
+                    contentDescription = "View Destination",
+                    modifier = Modifier
+                        .clickable {
+                            onTravelSelected(travel.id)
+                        }
+                )
             }
         }
     }

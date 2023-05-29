@@ -16,6 +16,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import rs.ac.metropolitan.cs330_pz.api.AiApi
+import rs.ac.metropolitan.cs330_pz.database.TravelDao
+import rs.ac.metropolitan.cs330_pz.model.AiRequest
+import rs.ac.metropolitan.cs330_pz.model.Travel
+import rs.ac.metropolitan.cs330_pz.navigation.TravelRoute
 
 class AppViewModel(
     private val dao: TravelDao
@@ -23,15 +28,12 @@ class AppViewModel(
 
     lateinit var navController: NavHostController
     var grantedInternetPermission = mutableStateOf(false)
+    var seeStops = mutableStateOf(false)
 
     var answer by mutableStateOf("")
         private set
     var isLoading by mutableStateOf(false)
         private set
-
-    fun navigateToMapScreen(){
-        navController.navigate(TravelRoute.Map.route)
-    }
 
     val retrofit = Retrofit.Builder()
         .baseUrl("https://api.openai.com")
@@ -103,8 +105,8 @@ class AppViewModel(
                     travelFrom.isBlank()
                     || travelTo.isBlank()
                     || travelStops.isBlank()
-                    //|| travelDate.isBlank()
-                    //|| travelDistance.isBlank()
+                    || travelDate.isBlank()
+                    || travelDistance.isBlank()
                 ){
                     return
                 }
@@ -153,4 +155,38 @@ class AppViewModel(
             }
         }
     }
+
+    fun navigateToTravelDetails(id: Int){
+        navController.navigate(TravelRoute.TravelDetails.createRoute(id))
+    }
+    fun getTravel(id: Int, state: TravelState): Travel?{
+        var travelList = state.travels
+        return travelList.find { it.id == id }
+    }
+
+    fun switchSeeStops(){
+        seeStops.value = !seeStops.value
+    }
+
+    fun goBack(){
+        navController.popBackStack()
+        seeStops = mutableStateOf(false)
+    }
+
+    fun getStopsList(id: Int, state: TravelState): List<String>?{
+        var travel = getTravel(id, state)
+        var stops = travel?.travelStops
+
+        var stopsArray: List<String>? = stops?.split(",")
+
+        stopsArray?.forEach {
+            println("Each stop $it")
+        }
+        stopsArray?.let {
+            return stopsArray
+        }?: kotlin.run {
+            return null
+        }
+    }
+
 }

@@ -1,5 +1,7 @@
 package rs.ac.metropolitan.cs330_pz
 
+import rs.ac.metropolitan.cs330_pz.model.Travel
+
 sealed interface TravelEvent {
     object SaveTravel: TravelEvent
     data class SetTravelFrom(val travelFrom: String): TravelEvent
