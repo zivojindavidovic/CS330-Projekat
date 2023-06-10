@@ -70,7 +70,7 @@ class AppViewModel(
             }
         }
     }
-    
+
     val calendar = Calendar.getInstance()
 
     var travelYear = calendar.get(Calendar.YEAR)

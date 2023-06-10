@@ -2,6 +2,7 @@ package rs.ac.metropolitan.cs330_pz.screens
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,16 +14,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import rs.ac.metropolitan.cs330_pz.AppViewModel
 import rs.ac.metropolitan.cs330_pz.TravelEvent
@@ -32,7 +36,7 @@ import rs.ac.metropolitan.cs330_pz.screens.dialogs.RequestInternetPermissionsDia
 
 
 @Composable
-fun HomeScreen(vm: AppViewModel, state: TravelState){
+fun HomeScreen(vm: AppViewModel, state: TravelState, onEvent: (TravelEvent) -> Unit){
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ){isGranted->
@@ -49,18 +53,41 @@ fun HomeScreen(vm: AppViewModel, state: TravelState){
         }
     }else{
         Column {
-            DestinationsList(state, vm)
+            DestinationsList(state, vm, onEvent)
         }
     }
 }
 
 @Composable
-fun DestinationsList(state: TravelState, vm: AppViewModel){
+fun DestinationsList(state: TravelState, vm: AppViewModel, onEvent: (TravelEvent)-> Unit){
     LazyColumn(){
         items(state.travels){travel ->
             SingleTravel(travel = travel){
                 vm.navigateToTravelDetails(it)
             }
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                Spacer(modifier = Modifier.weight(1f))
+                Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "Delete ${travel.travelFrom} - ${travel.travelTo}")
+                }
+                Column {
+                    IconButton(
+                        modifier = Modifier
+                            .background(Color.Transparent),
+                        onClick = {
+                            onEvent(TravelEvent.DeleteTravel(travel))
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+
+                    }
+                }
+            }
+
         }
     }
 }

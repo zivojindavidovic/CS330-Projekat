@@ -24,7 +24,7 @@ fun NavSettup(navController: NavHostController, context: Context, state: TravelS
     vm.navController = navController
     NavHost(navController = navController, startDestination = TravelRoute.Home.route ){
         composable(route = TravelRoute.Home.route){
-            HomeScreen(vm, state)
+            HomeScreen(vm, state, onEvent)
         }
         composable(route = TravelRoute.AddTravel.route){
             AddTravelScreen(vm, state, onEvent)
