@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,6 +39,7 @@ fun RequestInternetPermissionsDialog(
                 contentAlignment = Alignment.CenterEnd
             ){
                 Button(
+                    shape = MaterialTheme.shapes.medium,
                     onClick = {
                         launcher.launch(Manifest.permission.INTERNET)
                     }

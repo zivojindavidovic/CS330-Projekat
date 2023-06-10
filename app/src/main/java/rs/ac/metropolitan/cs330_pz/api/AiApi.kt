@@ -9,7 +9,7 @@ import rs.ac.metropolitan.cs330_pz.model.AiRequest
 interface AiApi {
     @Headers(
         "Content-Type: application/json",
-        "Authorization: Bearer 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"
+        "Authorization: Bearer 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"
     )
     @POST("/v1/completions")
     fun getCompletion(

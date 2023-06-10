@@ -70,15 +70,12 @@ class AppViewModel(
             }
         }
     }
-
-    //addTravelScreen
+    
     val calendar = Calendar.getInstance()
 
     var travelYear = calendar.get(Calendar.YEAR)
     var travelMonth = calendar.get(Calendar.MONTH)
     var travelDay = calendar.get(Calendar.DAY_OF_MONTH)
-
-    //adding Travel to Database
 
     private val _state = MutableStateFlow(TravelState())
     private val _travels = dao.getAllTravels()

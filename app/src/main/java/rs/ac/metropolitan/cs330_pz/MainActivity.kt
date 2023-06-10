@@ -45,7 +45,6 @@ class MainActivity : ComponentActivity() {
         }
     )
     @OptIn(ExperimentalMaterial3Api::class)
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -84,7 +83,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) {  paddingValue->
-                    NavSettup(navController = navController, state = state, context = this, onEvent = viewModel::onEvent)
+                    NavSettup(navController = navController, state = state, context = this, onEvent = viewModel::onEvent, paddingValues = paddingValue)
                 }
             }
         }
